@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <form name="criseForm" method="POST" netlify data-netlify="true" id="contactFormElement">
                     <input type="hidden" name="form-name" value="criseForm" />
                     ${hiddenFields}
-                    <input type="text" name="name" placeholder="Nom :" required><br>
+                    <input type="text" name="nom" placeholder="Nom :" required><br>
                     <input type="email" name="email" placeholder="Email :" required><br>
                     <textarea name="message" placeholder="Message :" required></textarea><br>
                     <button type="submit" id="contactSubmitButton">Envoyer</button>
