@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Gestion du bouton de diagnostic
     const boutonDiagnostic = document.getElementById('voirDiagnostic');
     if (!boutonDiagnostic) {
         console.error("Erreur : Le bouton 'Voir mon diagnostic' est introuvable !");
@@ -106,13 +107,17 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="contact-section">
                 <h2>Vous souhaitez aller plus loin ?</h2>
                 <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
-                <form name="criseForm" method="POST" netlify>
+                <form name="criseForm" method="POST" netlify id="contactFormElement">
                     <input type="hidden" name="form-name" value="criseForm" />
                     <input type="text" name="name" placeholder="Nom :" required><br>
                     <input type="email" name="email" placeholder="Email :" required><br>
                     <textarea name="message" placeholder="Message :" required></textarea><br>
-                    <button type="submit">Envoyer</button>
+                    <button type="submit" id="contactSubmitButton">Envoyer</button>
                 </form>
+                <div id="confirmationMessage" style="display: none; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #27ae60;">Merci pour votre message !</h3>
+                    <p>Nous vous recontacterons dans les meilleurs délais.</p>
+                </div>
                 <p style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">Contact : <a href="mailto:vincent.prevost@opinionvalley.com">vincent.prevost@opinionvalley.com</a></p>
             </div>
         `;
@@ -121,5 +126,28 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("retourQuestionnaire").addEventListener("click", function() {
             location.reload();
         });
+
+        // Gestion de la soumission du formulaire de contact
+        const contactForm = document.getElementById('contactFormElement');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+
+                fetch('/', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString()
+                })
+                .then(() => {
+                    contactForm.style.display = 'none';
+                    document.getElementById('confirmationMessage').style.display = 'block';
+                })
+                .catch((error) => {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                    console.error(error);
+                });
+            });
+        }
     });
 });
