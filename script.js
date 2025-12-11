@@ -103,12 +103,18 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Ajouter la section contact
+        let hiddenFields = '';
+        for (let i = 1; i <= 12; i++) {
+            hiddenFields += `<input type="hidden" name="q${i}" value="${reponses[`q${i}`] || ''}">`;
+        }
+
         form.innerHTML += `
             <div class="contact-section">
                 <h2>Vous souhaitez aller plus loin ?</h2>
                 <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
                 <form name="criseForm" method="POST" netlify data-netlify="true" id="contactFormElement">
                     <input type="hidden" name="form-name" value="criseForm" />
+                    ${hiddenFields}
                     <input type="text" name="name" placeholder="Nom :" required><br>
                     <input type="email" name="email" placeholder="Email :" required><br>
                     <textarea name="message" placeholder="Message :" required></textarea><br>
