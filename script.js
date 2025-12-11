@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="contact-section">
                 <h2>Vous souhaitez aller plus loin ?</h2>
                 <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
-                <form name="contact" method="POST" netlify data-netlify="true" id="contactFormElement">
-                    <input type="hidden" name="form-name" value="contact" />
+                <form name="criseForm" method="POST" netlify data-netlify="true" id="contactFormElement">
+                    <input type="hidden" name="form-name" value="criseForm" />
                     <input type="text" name="name" placeholder="Nom :" required><br>
                     <input type="email" name="email" placeholder="Email :" required><br>
                     <textarea name="message" placeholder="Message :" required></textarea><br>
@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const formData = new FormData(contactForm);
+
                 fetch('/', {
                     method: 'POST',
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
