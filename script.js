@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             reponses[`q${i}`] = checkedInput ? checkedInput.value : null;
         }
 
-        // Calcul du diagnostic (ton code existant)
+        // Calcul du diagnostic
         const positives = Object.values(reponses).filter(reponse =>
             ["complet", "recent", "veille_reguliere", "regulierement", "oui", "complete", "sensibilisees", "rapide_efficace", "cartographie_a_jour", "secteur_sensible"].includes(reponse)
         ).length;
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ["partiel", "occasionnel", "veille_incomplete", "pas_social_interne", "partielle", "pas_depuis_longtemps", "non_testes", "cartographie_ancienne", "peut_etre", "il_y_a_longtemps"].includes(reponse)
         ).length;
 
-        // Détermination du diagnostic (ton code existant)
+        // Détermination du diagnostic
         let titre, description, risques, conseils, couleur;
         if (positives >= 9) {
             titre = "✅ Vous êtes prêt.";
