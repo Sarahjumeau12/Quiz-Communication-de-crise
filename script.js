@@ -112,13 +112,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="contact-section">
                 <h2>Vous souhaitez aller plus loin ?</h2>
                 <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
-                <form name="criseForm" method="POST" netlify data-netlify="true" id="contactFormElement">
+                <form name="criseForm" method="POST" netlify data-netlify="true">
                     <input type="hidden" name="form-name" value="criseForm" />
                     ${hiddenFields}
                     <input type="text" name="nom" placeholder="Nom :" required><br>
                     <input type="email" name="email" placeholder="Email :" required><br>
                     <textarea name="message" placeholder="Message :" required></textarea><br>
-                    <button type="submit" id="contactSubmitButton">Envoyer</button>
+                    <button type="submit">Envoyer</button>
                 </form>
                 <div id="confirmationMessage" style="display: none; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
                     <h3 style="color: #27ae60;">Merci pour votre message !</h3>
@@ -133,27 +133,10 @@ document.addEventListener('DOMContentLoaded', function() {
             location.reload();
         });
 
-        // Gestion de la soumission du formulaire de contact
-        const contactForm = document.getElementById('contactFormElement');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = new FormData(contactForm);
-
-                fetch('/', {
-                    method: 'POST',
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams(formData).toString()
-                })
-                .then(() => {
-                    contactForm.style.display = 'none';
-                    document.getElementById('confirmationMessage').style.display = 'block';
-                })
-                .catch((error) => {
-                    alert('Une erreur est survenue. Veuillez réessayer.');
-                    console.error(error);
-                });
-            });
-        }
+        // Écouter l'événement de soumission de Netlify pour afficher le message de confirmation
+        document.querySelector('form[name="criseForm"]').addEventListener('netlify-submit', function(e) {
+            document.querySelector('form[name="criseForm"]').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'block';
+        });
     });
 });
