@@ -67,36 +67,52 @@ document.addEventListener('DOMContentLoaded', function() {
             hiddenFields += `<input type="hidden" name="q${i}" value="${reponses[`q${i}`] || ''}">`;
         }
 
-        const contactSection = document.createElement('div');
-        contactSection.className = 'contact-section';
-        contactSection.innerHTML = `
-            <h2>Vous souhaitez aller plus loin ?</h2>
-            <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
-            <form name="contactForm" method="POST" netlify>
-                <input type="hidden" name="form-name" value="contactForm">
-                ${hiddenFields}
-                <input type="text" name="nom" placeholder="Nom :" required><br>
-                <input type="email" name="email" placeholder="Email :" required><br>
-                <textarea name="message" placeholder="Message :" required></textarea><br>
-                <button type="submit">Envoyer</button>
-            </form>
-            <div id="confirmationMessage" style="display: none; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
-                <h3 style="color: #27ae60;">Merci pour votre message !</h3>
-                <p>Nous vous recontacterons dans les meilleurs délais.</p>
+        const contactHTML = `
+            <div class="contact-section">
+                <h2>Vous souhaitez aller plus loin ?</h2>
+                <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
+                <form name="criseForm" method="POST" netlify>
+                    <input type="hidden" name="form-name" value="criseForm">
+                    ${hiddenFields}
+                    <input type="text" name="nom" placeholder="Nom :" required><br>
+                    <input type="email" name="email" placeholder="Email :" required><br>
+                    <textarea name="message" placeholder="Message :" required></textarea><br>
+                    <button type="submit">Envoyer</button>
+                </form>
+                <div id="confirmationMessage" style="display: none; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #27ae60;">Merci pour votre message !</h3>
+                    <p>Nous vous recontacterons dans les meilleurs délais.</p>
+                </div>
+                <p style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">Contact : <a href="mailto:vincent.prevost@opinionvalley.com">vincent.prevost@opinionvalley.com</a></p>
             </div>
-            <p style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">Contact : <a href="mailto:vincent.prevost@opinionvalley.com">vincent.prevost@opinionvalley.com</a></p>
         `;
 
-        diagnosticSection.appendChild(contactSection);
+        diagnosticSection.innerHTML += contactHTML;
 
         document.getElementById("retourQuestionnaire").addEventListener("click", function() {
             location.reload();
         });
 
         // Écoute de l'événement de soumission réussie de Netlify
-        document.querySelector('form[name="contactForm"]').addEventListener('netlify-submit', function(e) {
-            document.querySelector('form[name="contactForm"]').style.display = 'none';
-            document.getElementById('confirmationMessage').style.display = 'block';
-        });
+        const form = document.querySelector('form[name="criseForm"]');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                fetch('/', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString()
+                })
+                .then(() => {
+                    form.style.display = 'none';
+                    document.getElementById('confirmationMessage').style.display = 'block';
+                })
+                .catch((error) => {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                    console.error(error);
+                });
+            });
+        }
     });
 });
