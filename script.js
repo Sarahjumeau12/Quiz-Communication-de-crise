@@ -43,8 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Afficher le diagnostic
-        const diagnosticDiv = document.createElement('div');
-        diagnosticDiv.innerHTML = `
+        const diagnosticSection = document.getElementById('diagnosticSection');
+        diagnosticSection.style.display = 'block';
+        diagnosticSection.innerHTML = `
             <div style="text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
                 <h2 style="color: ${couleur};">${titre}</h2>
                 <p style="font-size: 16px; line-height: 1.6;">${description}</p>
@@ -59,9 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button id="retourQuestionnaire" style="background-color: #3498db;">Retour au questionnaire</button>
             </div>
         `;
-
-        // Ajouter le diagnostic après le formulaire initial
-        document.getElementById('criseForm').appendChild(diagnosticDiv);
 
         // Ajouter la section contact
         let hiddenFields = '';
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <p style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">Contact : <a href="mailto:vincent.prevost@opinionvalley.com">vincent.prevost@opinionvalley.com</a></p>
         `;
 
-        document.getElementById('criseForm').appendChild(contactSection);
+        diagnosticSection.appendChild(contactSection);
 
         document.getElementById("retourQuestionnaire").addEventListener("click", function() {
             location.reload();
