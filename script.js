@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             reponses[`q${i}`] = checkedInput ? checkedInput.value : null;
         }
 
-        // Calcul du diagnostic (ton code existant)
+        // Calcul du diagnostic
         const positives = Object.values(reponses).filter(reponse =>
             ["complet", "recent", "veille_reguliere", "regulierement", "oui", "complete", "sensibilisees", "rapide_efficace", "cartographie_a_jour", "secteur_sensible"].includes(reponse)
         ).length;
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ["partiel", "occasionnel", "veille_incomplete", "pas_social_interne", "partielle", "pas_depuis_longtemps", "non_testes", "cartographie_ancienne", "peut_etre", "il_y_a_longtemps"].includes(reponse)
         ).length;
 
-        // Détermination du diagnostic (ton code existant)
+        // Détermination du diagnostic
         let titre, description, risques, conseils, couleur;
         if (positives >= 9) {
             titre = "✅ Vous êtes prêt.";
@@ -42,8 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
             conseils = "Le risque est majeur : une crise pourrait très vite devenir incontrôlable.";
         }
 
-        const form = document.getElementById('criseForm');
-        form.innerHTML = `
+        // Afficher le diagnostic
+        const diagnosticDiv = document.createElement('div');
+        diagnosticDiv.innerHTML = `
             <div style="text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
                 <h2 style="color: ${couleur};">${titre}</h2>
                 <p style="font-size: 16px; line-height: 1.6;">${description}</p>
@@ -59,39 +60,44 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
+        // Ajouter le diagnostic après le formulaire initial
+        document.getElementById('criseForm').appendChild(diagnosticDiv);
+
         // Ajouter la section contact
         let hiddenFields = '';
         for (let i = 1; i <= 12; i++) {
             hiddenFields += `<input type="hidden" name="q${i}" value="${reponses[`q${i}`] || ''}">`;
         }
 
-        form.innerHTML += `
-            <div class="contact-section">
-                <h2>Vous souhaitez aller plus loin ?</h2>
-                <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
-                <form name="criseForm" method="POST" netlify>
-                    <input type="hidden" name="form-name" value="criseForm">
-                    ${hiddenFields}
-                    <input type="text" name="nom" placeholder="Nom :" required><br>
-                    <input type="email" name="email" placeholder="Email :" required><br>
-                    <textarea name="message" placeholder="Message :" required></textarea><br>
-                    <button type="submit">Envoyer</button>
-                </form>
-                <div id="confirmationMessage" style="display: none; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
-                    <h3 style="color: #27ae60;">Merci pour votre message !</h3>
-                    <p>Nous vous recontacterons dans les meilleurs délais.</p>
-                </div>
-                <p style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">Contact : <a href="mailto:vincent.prevost@opinionvalley.com">vincent.prevost@opinionvalley.com</a></p>
+        const contactSection = document.createElement('div');
+        contactSection.className = 'contact-section';
+        contactSection.innerHTML = `
+            <h2>Vous souhaitez aller plus loin ?</h2>
+            <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
+            <form name="contactForm" method="POST" netlify>
+                <input type="hidden" name="form-name" value="contactForm">
+                ${hiddenFields}
+                <input type="text" name="nom" placeholder="Nom :" required><br>
+                <input type="email" name="email" placeholder="Email :" required><br>
+                <textarea name="message" placeholder="Message :" required></textarea><br>
+                <button type="submit">Envoyer</button>
+            </form>
+            <div id="confirmationMessage" style="display: none; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                <h3 style="color: #27ae60;">Merci pour votre message !</h3>
+                <p>Nous vous recontacterons dans les meilleurs délais.</p>
             </div>
+            <p style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">Contact : <a href="mailto:vincent.prevost@opinionvalley.com">vincent.prevost@opinionvalley.com</a></p>
         `;
+
+        document.getElementById('criseForm').appendChild(contactSection);
 
         document.getElementById("retourQuestionnaire").addEventListener("click", function() {
             location.reload();
         });
 
         // Écoute de l'événement de soumission réussie de Netlify
-        document.querySelector('form[name="criseForm"]').addEventListener('netlify-submit', function(e) {
-            document.querySelector('form[name="criseForm"]').style.display = 'none';
+        document.querySelector('form[name="contactForm"]').addEventListener('netlify-submit', function(e) {
+            document.querySelector('form[name="contactForm"]').style.display = 'none';
             document.getElementById('confirmationMessage').style.display = 'block';
         });
     });
