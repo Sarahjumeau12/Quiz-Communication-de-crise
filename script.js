@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="contact-section">
                 <h2>Vous souhaitez aller plus loin ?</h2>
                 <p>Laissez-nous vos coordonnées et nous vous contacterons dans les meilleurs délais :</p>
-                <form name="contactForm" method="POST" netlify>
-                    <input type="hidden" name="form-name" value="contactForm">
+                <form name="criseForm" method="POST" netlify>
+                    <input type="hidden" name="form-name" value="criseForm">
                     ${hiddenFields}
                     <input type="text" name="nom" placeholder="Nom :" required><br>
                     <input type="email" name="email" placeholder="Email :" required><br>
@@ -90,8 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Écoute de l'événement de soumission réussie de Netlify
-        document.querySelector('form[name="contactForm"]').addEventListener('netlify-submit', function(e) {
-            document.querySelector('form[name="contactForm"]').style.display = 'none';
+        document.querySelector('form[name="criseForm"]').addEventListener('netlify-submit', function(e) {
+            document.querySelector('form[name="criseForm"]').style.display = 'none';
             document.getElementById('confirmationMessage').style.display = 'block';
         });
     });
